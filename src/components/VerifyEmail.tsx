@@ -4,6 +4,8 @@ import { trpc } from '@/trpc/client'
 import { Loader2, XCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { buttonVariants } from './ui/button'
 
 interface VerifyEmailProps {
@@ -11,11 +13,16 @@ interface VerifyEmailProps {
 }
 
 export function VerifyEmail({ token }: VerifyEmailProps) {
+  const router = useRouter()
   const { data, isLoading, isError } = trpc.auth.verifyEmail.useQuery({
     token,
   })
 
   if (isError) {
+    router.push('/invalid-token', 3000)
+
+    toast.error('Something went wrong, please refresh the page and try again')
+
     return (
       <div className="flex flex-col items-center gap-2">
         <XCircle className="h-8 w-8 text-red-600" />
@@ -35,7 +42,7 @@ export function VerifyEmail({ token }: VerifyEmailProps) {
             src="/hippo-email-sent.png"
             fill
             priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="15rem"
             alt="the email was sent"
           />
         </div>
@@ -59,10 +66,10 @@ export function VerifyEmail({ token }: VerifyEmailProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-2">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="animate-spin h-8 w-8" />
         <h3 className="font-semibold text-xl">Verifying...</h3>
-        <p className="text-muted-foreground text-sm text-center">
-          This wont&apos;n take a long.
+        <p className="text-muted-foreground text-sm">
+          This won&apos;t take long.
         </p>
       </div>
     )

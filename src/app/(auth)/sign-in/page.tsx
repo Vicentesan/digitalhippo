@@ -5,19 +5,18 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { ArrowRight } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import Link from 'next/link'
 import {
   TAuthCredentialSchema,
   authCredentialSchema,
 } from '@/lib/validators/account-credentials'
 import { trpc } from '@/trpc/client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ChevronRight } from 'lucide-react'
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
 
-import { toast } from 'sonner'
-import { ZodError } from 'zod'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -45,8 +44,6 @@ export default function Page() {
     onSuccess: () => {
       toast.success('Signed in successfully')
 
-      router.refresh()
-
       if (origin) {
         router.push(`/${origin}`)
         return
@@ -58,6 +55,7 @@ export default function Page() {
       }
 
       router.push('/')
+      router.refresh()
     },
     onError: (err) => {
       if (err.data?.code === 'UNAUTHORIZED') {
@@ -88,7 +86,7 @@ export default function Page() {
               href="/sign-up"
             >
               Don&apos;t have an account? Sign up
-              <ArrowRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -156,19 +154,11 @@ export default function Page() {
             </div>
 
             {isSeller ? (
-              <Button
-                onClick={continueAsBuyer}
-                variant="secondary"
-                isLoading={isLoading}
-              >
+              <Button onClick={continueAsBuyer} variant="secondary">
                 Continue as customer
               </Button>
             ) : (
-              <Button
-                onClick={continueAsSeller}
-                variant="secondary"
-                isLoading={isLoading}
-              >
+              <Button onClick={continueAsSeller} variant="secondary">
                 Continue as seller
               </Button>
             )}

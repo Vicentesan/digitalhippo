@@ -14,9 +14,25 @@ import {
 import Link from 'next/link'
 import { buttonVariants } from './ui/button'
 import Image from 'next/image'
+import { useCart } from '@/hooks/use-cart'
+import { ScrollArea } from '@radix-ui/react-scroll-area'
+import { CartItem } from './CartItem'
+import { useEffect, useState } from 'react'
 
 export function Cart() {
-  const itemCount = 0
+  const { items } = useCart()
+
+  const [isMounted, setIsMounted] = useState<boolean>(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  const itemCount = items.length
+  const cartTotal = items.reduce(
+    (total, { product }) => total + product.price,
+    0,
+  )
   const fee = 1
 
   return (
@@ -27,18 +43,21 @@ export function Cart() {
           className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500 duration-500"
         />
         <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800 duration-500">
-          0
+          {isMounted ? itemCount : 0}
         </span>
       </SheetTrigger>
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
         <SheetHeader className="space-y-2.5 pr-6">
-          <SheetTitle>Cart (0)</SheetTitle>
+          <SheetTitle>Cart ({itemCount})</SheetTitle>
         </SheetHeader>
         {itemCount > 0 ? (
           <>
             <div className="flex w-full flex-col pr-6">
-              {/* Cart Logic */}
-              cart items
+              <ScrollArea>
+                {items.map(({ product }) => (
+                  <CartItem key={product.id} product={product} />
+                ))}
+              </ScrollArea>
             </div>
 
             <div className="space-y-4 pr-6">
@@ -54,7 +73,7 @@ export function Cart() {
                 </div>
                 <div className="flex">
                   <span className="flex-1">Total</span>
-                  <span>{formatPrice(fee)}</span>
+                  <span>{formatPrice(cartTotal + fee)}</span>
                 </div>
               </div>
 
@@ -81,7 +100,7 @@ export function Cart() {
               <Image
                 src="/hippo-empty-cart.png"
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
+                sizes="15rem"
                 alt="Empty Shopping Cart Image"
               />
             </div>

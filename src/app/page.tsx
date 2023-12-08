@@ -1,6 +1,7 @@
 import { MaxWidthWrapper } from '@/components/MaxWidthWrapper'
+import { ProductReel } from '@/components/ProductReel'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { ArrowDownToLine, CheckCircle, Leaf } from 'lucide-react'
+import { ArrowDownToLine, ChevronRight, CheckCircle, Leaf } from 'lucide-react'
 
 import Link from 'next/link'
 
@@ -42,11 +43,21 @@ export default function Home() {
             <Link href="/products" className={buttonVariants()}>
               Browse Trending
             </Link>
-            <Button variant="ghost">Our quality promise &rarr;</Button>
+            <Button variant="ghost" className="gap-2">
+              Our quality promise <ChevronRight className="w-4 h-4" />
+            </Button>
           </div>
         </div>
 
-        {/* TODO: list products */}
+        <ProductReel
+          query={{
+            sort: 'desc',
+            limit: 4,
+          }}
+          href="/products"
+          title="Brand new"
+          subtitle="brand new products"
+        />
       </MaxWidthWrapper>
 
       <section className="border-t border-gray-200 bg-gray-50">

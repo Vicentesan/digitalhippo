@@ -23,7 +23,7 @@ export default function Page({ searchParams }: PageProps) {
                 src="/hippo-email-sent.png"
                 fill
                 priority
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                sizes="15rem"
                 alt="hippo email sent image"
               />
             </div>
