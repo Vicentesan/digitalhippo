@@ -16,10 +16,11 @@ export function VerifyEmail({ token }: VerifyEmailProps) {
   const router = useRouter()
   const { data, isLoading, isError } = trpc.auth.verifyEmail.useQuery({
     token,
+  }, {
+    refetchInterval: false
   })
 
   if (isError) {
-    router.push('/invalid-token', 3000)
 
     toast.error('Something went wrong, please refresh the page and try again')
 
