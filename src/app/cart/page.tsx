@@ -88,7 +88,7 @@ export default function Page() {
                     (c) => c.value === product.category,
                   )?.label
 
-                  const { image } = product.product_images[0]
+                  const { image } = product.images[0]
 
                   return (
                     <li key={product.id} className="flex py-6 sm:py-10">

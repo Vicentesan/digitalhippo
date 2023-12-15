@@ -93,7 +93,7 @@ export const ReceiptEmail = ({
             <Text style={productsTitle}>Order Summary</Text>
           </Section>
           {products.map((product) => {
-            const { image } = product.product_images[0]
+            const { image } = product.images[0]
 
             return (
               <Section key={product.id}>

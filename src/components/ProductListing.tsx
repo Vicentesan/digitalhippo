@@ -30,7 +30,7 @@ export function ProductListing({ product, index }: ProductListingProps) {
     ({ value }) => value === product.category,
   )?.label
 
-  const validUrls = product.product_images
+  const validUrls = product.images
     .map(({ image }) => (typeof image === 'string' ? image : image.url))
     .filter(Boolean) as string[]
 

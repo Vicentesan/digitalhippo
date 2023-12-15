@@ -111,7 +111,7 @@ export default async function Page({ searchParams }: PageProps) {
                     product.product_files as ProductFile
                   ).url as string
 
-                  const { image } = product.product_images[0]
+                  const { image } = product.images[0]
 
                   return (
                     <li

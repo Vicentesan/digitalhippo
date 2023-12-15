@@ -46,7 +46,7 @@ export default async function Page({ params }: PageProps) {
     ({ value }) => value === product.category,
   )?.label
 
-  const validUrls = product.product_images
+  const validUrls = product.images
     .map(({ image }) => (typeof image === 'string' ? image : image.url))
     .filter(Boolean) as string[]
 

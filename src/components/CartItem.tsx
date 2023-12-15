@@ -7,7 +7,7 @@ import { Button } from './ui/button'
 import { formatPrice } from '@/lib/utils'
 
 export function CartItem({ product }: { product: Product }) {
-  const { image } = product.product_images[0]
+  const { image } = product.images[0]
 
   const { removeItem } = useCart()
 
