@@ -5,6 +5,7 @@ import { useCart } from '@/hooks/use-cart'
 import { getServerSideUser } from '@/lib/payload-utils'
 import { formatPrice } from '@/lib/utils'
 import { Product, ProductFile, User } from '@/payload-types'
+import { trpc } from '@/trpc/client'
 import { ChevronRight } from 'lucide-react'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
@@ -18,8 +19,6 @@ interface PageProps {
 export default async function Page({ searchParams }: PageProps) {
   const { orderId } = searchParams
   const nextCookies = cookies()
-
-  const { removeItem } = useCart()
 
   const { user } = await getServerSideUser(nextCookies)
 
@@ -54,11 +53,20 @@ export default async function Page({ searchParams }: PageProps) {
 
   const fee = 1
 
-  if(order._isPaid) {
-    products.forEach(function(p) {
-      removeItem(p.id)
-    })
-  }
+  const productsIds = (user.products || []).reduce<Array<string>>((acc, product) => {
+    if (!product) return acc
+    if (typeof product === 'string') {
+      acc.push(product)
+    } else {
+      acc.push(product.id)
+    }
+
+    return acc
+  }, [])
+
+  products.forEach(function(p) {
+
+  })
 
   return (
     <main className='relative lg:min-h-full'>
@@ -186,6 +194,7 @@ export default async function Page({ searchParams }: PageProps) {
             </div>
 
             <PaymentStatus
+            productsIds={productsIds}
               isPaid={order._isPaid}
               orderEmail={(order.user as User).email}
               orderId={order.id}

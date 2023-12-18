@@ -1,5 +1,7 @@
 'use client'
 
+import { useCart } from '@/hooks/use-cart'
+import { Product } from '@/payload-types'
 import { trpc } from '@/trpc/client'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -8,14 +10,18 @@ interface PaymentStatusProps {
   orderEmail: string
   orderId: string
   isPaid: boolean
+  productsIds: string[]
 }
 
 export function PaymentStatus({
   orderEmail,
   orderId,
   isPaid,
+  productsIds
 }: PaymentStatusProps) {
   const router = useRouter()
+
+  const { removeItem } = useCart()
 
   const { data } = trpc.payment.pollOrderStatus.useQuery(
     { orderId },
@@ -28,6 +34,12 @@ export function PaymentStatus({
   useEffect(() => {
     if (data?.isPaid) router.refresh()
   }, [data?.isPaid, router])
+
+  if(isPaid) {
+  productsIds.forEach(function(p) {
+    removeItem(p)
+  })
+  }
 
   return (
     <div className="mt-16 grid grid-cols-2 gap-x-4 text-sm text-gray-600">
