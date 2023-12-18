@@ -4,7 +4,6 @@ import { trpc } from '@/trpc/client'
 import { Loader2, XCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { buttonVariants } from './ui/button'
 
@@ -13,15 +12,16 @@ interface VerifyEmailProps {
 }
 
 export function VerifyEmail({ token }: VerifyEmailProps) {
-  const router = useRouter()
-  const { data, isLoading, isError } = trpc.auth.verifyEmail.useQuery({
-    token,
-  }, {
-    refetchInterval: false
-  })
+  const { data, isLoading, isError } = trpc.auth.verifyEmail.useQuery(
+    {
+      token,
+    },
+    {
+      refetchInterval: false,
+    },
+  )
 
   if (isError) {
-
     toast.error('Something went wrong, please refresh the page and try again')
 
     return (

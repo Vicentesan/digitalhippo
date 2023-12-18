@@ -1,7 +1,6 @@
 'use client'
 
 import { useCart } from '@/hooks/use-cart'
-import { Product } from '@/payload-types'
 import { trpc } from '@/trpc/client'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -17,7 +16,7 @@ export function PaymentStatus({
   orderEmail,
   orderId,
   isPaid,
-  productsIds
+  productsIds,
 }: PaymentStatusProps) {
   const router = useRouter()
 
@@ -35,9 +34,9 @@ export function PaymentStatus({
     if (data?.isPaid) router.refresh()
   }, [data?.isPaid, router])
 
-  if(isPaid) {
-    if(items.length || items.length !== 0) {
-      productsIds.forEach(function(pId) {
+  if (isPaid) {
+    if (items.length || items.length !== 0) {
+      productsIds.forEach(function (pId) {
         removeItem(pId)
       })
     }

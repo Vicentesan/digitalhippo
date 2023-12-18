@@ -13,18 +13,26 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 
-
-export function UserAccountNav({ user, align }: { user: User, align?: 'start' | 'center' | 'end'}) {
+export function UserAccountNav({
+  user,
+  align,
+}: {
+  user: User
+  align?: 'start' | 'center' | 'end'
+}) {
   const { signOut } = useAuth()
 
-  const contentAlign = align ? align : 'end'
-
+  const contentAlign = align || 'end'
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">
-        <Button variant="ghost" size="sm" className="relative gap-2 justify-center items-center">
-          <UserIcon className='w-4 h-4 text-base' /> My account
+        <Button
+          variant="ghost"
+          size="sm"
+          className="relative gap-2 justify-center items-center"
+        >
+          <UserIcon className="w-4 h-4 text-base" /> My account
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white w-60" align={contentAlign}>

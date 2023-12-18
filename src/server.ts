@@ -13,7 +13,7 @@ import nextBuid from 'next/dist/build'
 import path from 'path'
 import { PayloadRequest } from 'payload/types'
 
-import { parse } from 'url'
+import { parse } from 'node:url'
 
 const app = express()
 const PORT = Number(process.env.PORT) || 3000
@@ -55,7 +55,7 @@ const start = async () => {
   cartRouter.get('/', (req, res) => {
     const request = req as PayloadRequest
 
-    if(!request.user) return res.redirect('/sign-in?origin=cart')
+    if (!request.user) return res.redirect('/sign-in?origin=cart')
 
     const parsedUrl = parse(req.url, true)
 
@@ -64,7 +64,7 @@ const start = async () => {
 
   app.use('/cart', cartRouter)
 
-  if(process.env.NEXT_BUILD) {
+  if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {
       payload.logger.info('NextJs is building for production')
 
@@ -76,8 +76,6 @@ const start = async () => {
 
     return
   }
-
-  
 
   app.use(
     '/api/trpc',

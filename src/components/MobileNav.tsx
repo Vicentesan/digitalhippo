@@ -1,133 +1,84 @@
-'use client'
-
 import { PRODUCT_CATEGORIES } from '@/config'
-import { User } from '@/payload-types'
-import { Menu, X } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Sheet, SheetContent, SheetFooter, SheetTrigger } from './ui/sheet'
+import { User } from '@/payload-types'
 import { UserAccountNav } from './UserAccountNav'
 
-
-export function MobileNav({user}: {user: User | null}) {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-
-  const pathname = usePathname()
-
-  useEffect(() => {
-    setIsOpen(false)
-  }, [pathname])
-
-  const closeOnCurrent = (href: string) => {
-    if (pathname === href) {
-      setIsOpen(false)
-    }
-  }
-
-  useEffect(() => {
-    if (isOpen)
-      document.body.classList.add('overflow-hidden')
-    else document.body.classList.remove('overflow-hidden')
-  }, [isOpen])
-
-  if (!isOpen)
-    return (
-      <button
-        type='button'
-        onClick={() => setIsOpen(true)}
-        className='lg:hidden relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400'>
-        <Menu className='h-6 w-6' aria-hidden='true' />
-      </button>
-    )
-
+export async function MobileNav({ user }: { user: User | null }) {
   return (
-    <div>
-      <div className='relative z-40 lg:hidden'>
-        <div className='fixed inset-0 bg-black bg-opacity-25' />
-      </div>
+    <Sheet>
+      <SheetTrigger className="lg:hidden relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400">
+        <MenuIcon className="h-6 w-6" aria-hidden="true" />
+      </SheetTrigger>
 
-      <div className='fixed overflow-y-scroll overscroll-y-none inset-0 z-40 flex'>
-        <div className='w-4/5' >
-          <div className='relative flex w-full max-w-sm flex-col overflow-y-auto bg-white pb-12 shadow-xl'>
-            <div className='flex px-4 pb-2 pt-5'>
-              <button
-                type='button'
-                onClick={() => setIsOpen(false)}
-                className='relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400'>
-                <X className='h-6 w-6' aria-hidden='true' />
-              </button>
-            </div>
+      <SheetContent
+        className="flex flex-col w-full xs:max-w-sm sm:max-w-md pr-3 sm:pr-4 overflow-y-auto"
+        side={'left'}
+      >
+        <div>
+          <ul>
+            <li className="w-fit mx-auto">
+              {user && <UserAccountNav align="center" user={user} />}
+            </li>
 
-            <div className='mt-2'>
-              <ul>
+            {PRODUCT_CATEGORIES.map((category) => (
+              <li key={category.label} className="space-y-6 pb-8 pt-6">
+                <div className="border-b border-gray-200">
+                  <div className="flex">
+                    <p className="flex-1 py-4 text-base font-medium whitespace-nowrap border-b-2 border-transparent text-gray-900">
+                      {category.label}
+                    </p>
+                  </div>
+                </div>
 
-              <li className='w-fit mx-auto'>
-                {user && <UserAccountNav align='center' user={user}/>}
-              </li>
-
-                {PRODUCT_CATEGORIES.map((category) => (
-                  <li
-                    key={category.label}
-                    className='space-y-10 px-4 pb-8 pt-10'>
-                    <div className='border-b border-gray-200'>
-                      <div className='-mb-px flex'>
-                        <p className='border-transparent text-gray-900 flex-1 whitespace-nowrap border-b-2 py-4 text-base font-medium'>
-                          {category.label}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className='grid grid-cols-2 gap-y-10 gap-x-4'>
-                      {category.featured.map((item) => (
-                        <div
-                          key={item.name}
-                          className='group relative text-sm'>
-                          <div className='relative aspect-square overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75'>
-                            <Image
-                              fill
-                              src={item.image}
-                              alt='product category image'
-                              className='object-cover object-center'
-                            />
-                          </div>
-                          <Link
-                            href={item.href}
-                            className='mt-6 block font-medium text-gray-900'>
-                            {item.name}
-                          </Link>
+                <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+                  {category.featured.map((item) => (
+                    <Link
+                      href={item.href}
+                      className="mt-6 block font-medium text-gray-900"
+                      key={item.name}
+                    >
+                      <div className="group relative text-sm">
+                        <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                          <Image
+                            src={item.image}
+                            alt="Imagem da categoria do produto"
+                            fill
+                            sizes="(max-width: 400px) 40vw, (max-width: 640px) 30vw, 20vw"
+                            className="object-cover object-center"
+                          />
                         </div>
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            {user ? null : (
-                <>
-            <div className='space-y-6 border-t border-gray-200 px-4 py-6'>
-                <div className='flow-root'>
-                <Link
-                  onClick={() => closeOnCurrent('/sign-in')}
-                  href='/sign-in'
-                  className='-m-2 block p-2 font-medium text-gray-900'>
-                  Sign in
-                </Link>
-              </div>
-              <div className='flow-root'>
-                <Link
-                  onClick={() => closeOnCurrent('/sign-up')}
-                  href='/sign-up'
-                  className='-m-2 block p-2 font-medium text-gray-900'>
-                  Sign up
-                </Link>
-              </div>
-            </div>
-            </>
-              )}
-          </div>
+
+                        <p className="mt-2">{item.name}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </div>
+        {user ? null : (
+          <SheetFooter className="flex flex-col sm:flex-col sm:space-x-0">
+            <SheetTrigger asChild>
+              <Link href="/sign-in" className="py-2 font-medium text-gray-900">
+                Sign in
+              </Link>
+            </SheetTrigger>
+
+            <SheetTrigger asChild>
+              <Link
+                href="/sign-up"
+                className="py-2 mt-1 font-medium text-gray-900"
+              >
+                Sign up
+              </Link>
+            </SheetTrigger>
+          </SheetFooter>
+        )}
+      </SheetContent>
+    </Sheet>
   )
 }
