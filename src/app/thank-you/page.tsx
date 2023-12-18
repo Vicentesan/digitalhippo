@@ -64,10 +64,6 @@ export default async function Page({ searchParams }: PageProps) {
     return acc
   }, [])
 
-  products.forEach(function(p) {
-
-  })
-
   return (
     <main className='relative lg:min-h-full'>
     <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>

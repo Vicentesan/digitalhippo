@@ -36,8 +36,8 @@ export function PaymentStatus({
   }, [data?.isPaid, router])
 
   if(isPaid) {
-  productsIds.forEach(function(p) {
-    removeItem(p)
+  productsIds.forEach(function(pId) {
+    removeItem(pId)
   })
   }
 
