@@ -190,7 +190,7 @@ export default async function Page({ searchParams }: PageProps) {
             </div>
 
             <PaymentStatus
-            productsIds={productsIds}
+              productsIds={productsIds}
               isPaid={order._isPaid}
               orderEmail={(order.user as User).email}
               orderId={order.id}

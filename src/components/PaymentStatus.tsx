@@ -21,7 +21,7 @@ export function PaymentStatus({
 }: PaymentStatusProps) {
   const router = useRouter()
 
-  const { removeItem } = useCart()
+  const { items, removeItem } = useCart()
 
   const { data } = trpc.payment.pollOrderStatus.useQuery(
     { orderId },
@@ -36,9 +36,11 @@ export function PaymentStatus({
   }, [data?.isPaid, router])
 
   if(isPaid) {
-  productsIds.forEach(function(pId) {
-    removeItem(pId)
-  })
+    if(items.length || items.length !== 0) {
+      productsIds.forEach(function(pId) {
+        removeItem(pId)
+      })
+    }
   }
 
   return (
