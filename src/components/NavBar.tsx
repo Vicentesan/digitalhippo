@@ -21,6 +21,7 @@ export async function NavBar() {
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               <MobileNav user={user}/>
+              
 
               <div className="ml-4 flex lg:ml-0">
                 <Link href="/">
@@ -72,9 +73,9 @@ export async function NavBar() {
                     </div>
                   )}
 
-                  <div className="ml-4 flow-root lg:ml-6">
-                    <Cart />
-                  </div>
+                </div>
+                <div className='ml-4 flow-root lg:ml-6'>
+                  <Cart />
                 </div>
               </div>
             </div>
