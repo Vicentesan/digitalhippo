@@ -1,6 +1,7 @@
 import { PaymentStatus } from '@/components/PaymentStatus'
 import { PRODUCT_CATEGORIES } from '@/config'
 import { getPayloadClient } from '@/get-payload'
+import { useCart } from '@/hooks/use-cart'
 import { getServerSideUser } from '@/lib/payload-utils'
 import { formatPrice } from '@/lib/utils'
 import { Product, ProductFile, User } from '@/payload-types'
@@ -17,6 +18,8 @@ interface PageProps {
 export default async function Page({ searchParams }: PageProps) {
   const { orderId } = searchParams
   const nextCookies = cookies()
+
+  const { removeItem } = useCart()
 
   const { user } = await getServerSideUser(nextCookies)
 
@@ -50,6 +53,12 @@ export default async function Page({ searchParams }: PageProps) {
   }, 0)
 
   const fee = 1
+
+  if(order._isPaid) {
+    products.forEach(function(p) {
+      removeItem(p.id)
+    })
+  }
 
   return (
     <main className='relative lg:min-h-full'>
