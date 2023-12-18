@@ -1,13 +1,16 @@
 'use client'
 
 import { PRODUCT_CATEGORIES } from '@/config'
+import { User } from '@/payload-types'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { UserAccountNav } from './UserAccountNav'
 
-export function MobileNav() {
+
+export function MobileNav({user}: {user: User | null}) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const pathname = usePathname()
@@ -45,7 +48,7 @@ export function MobileNav() {
       </div>
 
       <div className='fixed overflow-y-scroll overscroll-y-none inset-0 z-40 flex'>
-        <div className='w-4/5'>
+        <div className='w-4/5' >
           <div className='relative flex w-full max-w-sm flex-col overflow-y-auto bg-white pb-12 shadow-xl'>
             <div className='flex px-4 pb-2 pt-5'>
               <button
@@ -58,6 +61,11 @@ export function MobileNav() {
 
             <div className='mt-2'>
               <ul>
+
+              <li className='w-fit mx-auto'>
+                {user && <UserAccountNav align='center' user={user}/>}
+              </li>
+
                 {PRODUCT_CATEGORIES.map((category) => (
                   <li
                     key={category.label}
@@ -95,9 +103,10 @@ export function MobileNav() {
                 ))}
               </ul>
             </div>
-
+            {user ? null : (
+                <>
             <div className='space-y-6 border-t border-gray-200 px-4 py-6'>
-              <div className='flow-root'>
+                <div className='flow-root'>
                 <Link
                   onClick={() => closeOnCurrent('/sign-in')}
                   href='/sign-in'
@@ -114,6 +123,8 @@ export function MobileNav() {
                 </Link>
               </div>
             </div>
+            </>
+              )}
           </div>
         </div>
       </div>

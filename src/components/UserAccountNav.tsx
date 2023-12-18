@@ -1,5 +1,7 @@
 'use client'
 
+import { useAuth } from '@/hooks/use-auth'
+import { LogOut, UserIcon } from 'lucide-react'
 import Link from 'next/link'
 import { User } from '../payload-types'
 import { Button } from './ui/button'
@@ -10,20 +12,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
-import { LogOut } from 'lucide-react'
-import { useAuth } from '@/hooks/use-auth'
 
-export function UserAccountNav({ user }: { user: User }) {
+
+export function UserAccountNav({ user, align }: { user: User, align?: 'start' | 'center' | 'end'}) {
   const { signOut } = useAuth()
+
+  const contentAlign = align ? align : 'end'
+
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">
-        <Button variant="ghost" size="sm" className="relative">
-          My account
+        <Button variant="ghost" size="sm" className="relative gap-2 justify-center items-center">
+          <UserIcon className='w-4 h-4 text-base' /> My account
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white w-60" align="end">
+      <DropdownMenuContent className="bg-white w-60" align={contentAlign}>
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-0.5 leading-none">
             <p className="font-medium text-sm text-black">{user.email}</p>
